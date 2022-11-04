@@ -1,10 +1,13 @@
 ﻿using Five.Bank.Domain.Contracts.v1;
+using Five.Bank.Domain.Exceptions.v1;
 
 namespace Five.Bank.Domain.Entities.v1;
 
 public sealed class Account : IEntity
 {
-    public Account(Guid customerId) : this(Guid.NewGuid(), new (), customerId, false) {}
+    public Account(Guid customerId) : this(Guid.NewGuid(), new List<Transaction>(), customerId, false)
+    {
+    }
 
     public Account(Guid id, List<Transaction> transactions, Guid customerId, bool isClosed)
     {
@@ -14,36 +17,37 @@ public sealed class Account : IEntity
         IsClosed = isClosed;
     }
 
-    public Guid Id { get; init; }
     public List<Transaction> Transactions { get; init; }
-    public Guid CustomerId { get; private set; }
+    public Guid CustomerId { get; }
     public bool IsClosed { get; private set; }
 
-    public void Deposit(Credit credit) => Transactions.Add(credit);
+    public Guid Id { get; init; }
+
+    public void Deposit(Credit credit)
+    {
+        Transactions.Add(credit);
+    }
 
     public void Withdraw(Debit debit)
     {
-        if (GetCurrentBalance() > debit.Amount) Transactions.Add(debit);
+        if (GetCurrentBalance() < debit.Amount)
+            throw new DomainException("A conta não possui saldo para saque");
 
-        throw new Exception("A conta não possui saldo para saque");
+        Transactions.Add(debit);
     }
 
-    public void Open(Guid customerId, Credit credit)
+    public void Open(Credit credit)
     {
-        CustomerId = customerId;
         IsClosed = false;
         Deposit(credit);
     }
 
     public void Close()
     {
-        if (GetCurrentBalance() == 0)
-        {
-            IsClosed = true;
-            return;
-        }
+        if (GetCurrentBalance() != 0)
+            throw new DomainException("A conta não pode ser fechada, por que existe saldo.");
 
-        throw new Exception("A conta não pode ser fechada, por que existe saldo.");
+        IsClosed = true;
     }
 
     public decimal GetCurrentBalance()
@@ -51,15 +55,11 @@ public sealed class Account : IEntity
         var balance = 0M; // decimal balance = 0;
 
         foreach (var transaction in Transactions)
-        {
             if (transaction is Debit)
                 balance -= transaction.Amount;
             else
                 balance += transaction.Amount;
-        }
 
         return balance;
-
-
     }
 }

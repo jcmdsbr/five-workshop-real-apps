@@ -2,6 +2,6 @@
 
 public interface IRepository<TEntity> where TEntity : IEntity
 {
-    Task AddAsync(TEntity obj); 
+    Task AddAsync(TEntity obj);
     Task<TEntity?> GetByIdAsync(Guid id);
 }

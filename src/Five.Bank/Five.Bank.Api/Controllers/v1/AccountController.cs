@@ -1,61 +1,131 @@
-﻿using Five.Bank.Api.Models.v1;
-using Microsoft.AspNetCore.Http;
+﻿using Five.Bank.Api.Models.v1.Inputs;
+using Five.Bank.Domain.Contracts.v1;
+using Five.Bank.Domain.Entities.v1;
+using Five.Bank.Domain.Exceptions.v1;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Five.Bank.Api.Controllers.v1
+namespace Five.Bank.Api.Controllers.v1;
+
+[Route("api/v1/accounts")]
+[ApiController]
+public class AccountController : ControllerBase
 {
-    [Route("api/v1/accounts")]
-    [ApiController]
-    public class AccountController : ControllerBase
+    private readonly IAccountRepository _accountRepository;
+    private readonly ICustomerRepository _customerRepository;
+
+    public AccountController(
+        IAccountRepository accountRepository,
+        ICustomerRepository customerRepository)
     {
-        //TODO Adicionar o repositório AccountRepository
+        _accountRepository = accountRepository;
+        _customerRepository = customerRepository;
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> Open([FromBody] AccountOpenInputModel model)
+    [HttpPost]
+    public async Task<IActionResult> Open([FromBody] AccountOpenInputModel model)
+    {
+        try
         {
-            //TODO abrir a conta
-            // Adicionar uma transação do tipo crédito de R$ 100
+            var customer = await _customerRepository.GetByIdAsync(model.CustomerId);
 
-            //Salvar no repositorio
-            //Retornar sucesso
+            if (customer is null) return BadRequest(new { Message = "Usuário inválido" });
 
-            // id customer
-            // var account = new Account(model.Id);
-            // account.Open(new Credit(100))//100
-            // _repository.AddAsync(account);
+            var account = new Account(model.CustomerId);
 
-            return await Task.FromResult(Ok());
+            account.Open(new Credit(100, "Abertura de conta"));
+            await _accountRepository.AddAsync(account);
+
+            return Ok();
         }
-
-        [HttpPost("{id:guid}/deposit")]
-        public async Task<IActionResult> Deposit(Guid id, [FromBody] AccountDepositInputModel model)
+        catch (DomainException e)
         {
-            // TODO realizar o deposito
-            //Retornar sucesso
-            return await Task.FromResult(Ok());
+            return BadRequest(new { e.Message });
         }
+    }
 
-        [HttpPost("{id:guid}/withdraw")]
-        public async Task<IActionResult> Withdraw(Guid id,[FromBody] AccountDepositInputModel model)
+    [HttpPost("{id:guid}/deposit")]
+    public async Task<IActionResult> Deposit(Guid id, [FromBody] AccountDepositInputModel model)
+    {
+        try
         {
-            // TODO realizar o saque
-            //Retornar sucesso
-            return await Task.FromResult(Ok());
-        }
+            var account = await _accountRepository.GetByIdAsync(id);
 
-        [HttpGet("{id:guid}")]
-        public async Task<IActionResult> GetCurrentBalance(Guid id)
+            if (account is null || account.IsClosed)
+                return NotFound(new { Message = "Conta inativa ou inváida" });
+
+            account.Deposit(new Credit(model.Amount, "Deposito em conta"));
+
+            await _accountRepository.UpdateAsync(account);
+
+            return Ok();
+        }
+        catch (DomainException e)
         {
-            // Buscar o saldo da conta pelo id
-            return await Task.FromResult(Ok());
+            return BadRequest(new { e.Message });
         }
+    }
 
-        [HttpDelete("{id:guid}")]
-        public async Task<IActionResult> Close(Guid id)
+    [HttpPost("{id:guid}/withdraw")]
+    public async Task<IActionResult> Withdraw(Guid id, [FromBody] AccountWithdrawInputModel model)
+    {
+        try
         {
-            // Fechar a conta
-            return await Task.FromResult(Ok());
-        }
+            var account = await _accountRepository.GetByIdAsync(id);
 
+            if (account is null || account.IsClosed)
+                return NotFound(new { Message = "Conta inativa ou inváida" });
+
+            account.Withdraw(new Debit(model.Amount, "Saque em conta"));
+
+            await _accountRepository.UpdateAsync(account);
+
+            return Ok();
+        }
+        catch (DomainException e)
+        {
+            return BadRequest(new { e.Message });
+        }
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetCurrentBalance(Guid id)
+    {
+        try
+        {
+            var account = await _accountRepository.GetByIdAsync(id);
+
+            if (account is null || account.IsClosed)
+                return NotFound(new { Message = "Conta inativa ou inváida" });
+
+            var balance = account.GetCurrentBalance();
+
+            return Ok(new { Content = balance });
+        }
+        catch (DomainException e)
+        {
+            return BadRequest(new { e.Message });
+        }
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Close(Guid id)
+    {
+        try
+        {
+            var account = await _accountRepository.GetByIdAsync(id);
+
+            if (account is null || account.IsClosed)
+                return NotFound(new { Message = "Conta inativa ou inváida" });
+
+            account.Close();
+
+            await _accountRepository.UpdateAsync(account);
+
+            return NoContent();
+        }
+        catch (DomainException e)
+        {
+            return BadRequest(new { e.Message });
+        }
     }
 }

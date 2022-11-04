@@ -6,13 +6,11 @@ namespace Five.Bank.Infra.MongoDb.Repositories.v1;
 
 public class CustomerRepository : ICustomerRepository
 {
-    private readonly IMongoClient _client;
     private readonly IMongoCollection<Customer> _collection;
 
     public CustomerRepository(IMongoClient client)
     {
-        _client = client;
-        _collection = _client
+        _collection = client
             .GetDatabase("FiveBank")
             .GetCollection<Customer>(nameof(Customer));
     }
@@ -22,7 +20,7 @@ public class CustomerRepository : ICustomerRepository
         await _collection.InsertOneAsync(obj);
     }
 
-    public async Task<Customer> GetByIdAsync(Guid id)
+    public async Task<Customer?> GetByIdAsync(Guid id)
     {
         return await _collection
             .Find(customer => customer.Id == id)
