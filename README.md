@@ -16,12 +16,10 @@ Se esse projeto te ajudou em alguma coisa, taquele pau na estrelinha \o/
 - ASP.NET Core 6 (with .NET Core)
 - MongoDb
 - .NET Core Native DI
-- FluentValidator
 
 ## Arquitetura / Padrões / Princípios 🏗️
 
 - Domain Driven Design (Layers, Domain Model Pattern and Repository Pattern)
-- CQRS (Imediate Consistency)
 - SOLID
 - Clean Code
 
