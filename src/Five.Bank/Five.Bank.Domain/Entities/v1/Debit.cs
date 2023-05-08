@@ -2,12 +2,12 @@
 
 public sealed class Debit : Transaction
 {
-    public Debit(decimal amount, DateTime createdAt, string? description) 
-        : base(amount, createdAt, description)
+    public Debit(decimal amount, string? description)
+        : base(amount, DateTime.Now, description)
     {
     }
 
-    public Debit(Guid id, decimal amount, DateTime createdAt, string? description) 
+    public Debit(Guid id, decimal amount, DateTime createdAt, string? description)
         : base(id, amount, createdAt, description)
     {
     }

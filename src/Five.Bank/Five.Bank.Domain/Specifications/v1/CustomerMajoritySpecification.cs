@@ -9,5 +9,8 @@ public class CustomerMajoritySpecification
         _birthday = birthday;
     }
 
-    public bool IsSatisfied() => DateTime.Now.Year - _birthday.Year >= 18;
+    public bool IsSatisfied()
+    {
+        return DateTime.Now.Year - _birthday.Year >= 18;
+    }
 }

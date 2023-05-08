@@ -34,19 +34,14 @@ public class DocumentAlgorithmSpecification
             clearDocument.Equals("77777777777") ||
             clearDocument.Equals("88888888888") ||
             clearDocument.Equals("99999999999"))
-        {
             return false;
-        }
 
         if (clearDocument.Any(c => !char.IsNumber(c)))
             return false;
 
         var documentArray = new int[11];
-       
-        for (var i = 0; i < clearDocument.Length; i++)
-        {
-            documentArray[i] = int.Parse(clearDocument[i].ToString());
-        }
+
+        for (var i = 0; i < clearDocument.Length; i++) documentArray[i] = int.Parse(clearDocument[i].ToString());
 
         for (var i = 0; i < documentArray.Length - 2; i++)
         {
@@ -55,19 +50,20 @@ public class DocumentAlgorithmSpecification
         }
 
         var modI = totalDigitI % 11;
-        if (modI < 2) { modI = 0; }
-        else { modI = 11 - modI; }
+        if (modI < 2)
+            modI = 0;
+        else
+            modI = 11 - modI;
 
-        if (documentArray[9] != modI)
-        {
-            return false;
-        }
+        if (documentArray[9] != modI) return false;
 
         totalDigitIi += modI * 2;
 
         var modIi = totalDigitIi % 11;
-        if (modIi < 2) { modIi = 0; }
-        else { modIi = 11 - modIi; }
+        if (modIi < 2)
+            modIi = 0;
+        else
+            modIi = 11 - modIi;
         return documentArray[10] == modIi;
     }
 }
