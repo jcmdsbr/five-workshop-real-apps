@@ -1,11 +1,11 @@
 ﻿using _5by5.InterAction.Sample.Domain.Contracts.v1;
-using _5by5.InterAction.Sample.Infra.Repositories.v1;
+using _5by5.InterAction.Sample.Infra.Repositories;
+using _5by5.InterAction.Sample.Infra.Repositories.Customer.v1;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MongoDB.Driver;
 using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Driver;
 
 namespace _5by5.InterAction.Sample.Infra;
 
@@ -16,7 +16,6 @@ public static class Bootstrapper
         this IServiceCollection services,
         IConfiguration configuration)
     {
-
         // Create MongoDB client settings.
         var connectionString = configuration.GetConnectionString("Mongo");
         var clientSettings = MongoClientSettings.FromConnectionString(connectionString);
@@ -29,6 +28,7 @@ public static class Bootstrapper
         return services
             .AddSingleton(clientSettings)
             .AddSingleton<IMongoClient>(client)
-            .AddScoped(typeof(IRepository<,>), typeof(BaseDbRepository<,>));
+            .AddScoped(typeof(IRepository<,>), typeof(BaseDbRepository<,>))
+            .AddScoped<ICustomerRepository, CustomerRepository>();
     }
 }

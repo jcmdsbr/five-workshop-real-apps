@@ -1,4 +1,4 @@
-using _5by5.InterAction.Sample.Domain;
+﻿using _5by5.InterAction.Sample.Domain;
 using _5by5.InterAction.Sample.Infra;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -8,7 +8,7 @@ public sealed class DomainNotificationServiceHandler : IDomainNotificationServic
     private readonly List<string> _notifications = [];
 
     private bool _disposed;
-    
+
     public bool HasNotification => _notifications.Count > 0;
 
     public void Add(string message)
@@ -20,7 +20,7 @@ public sealed class DomainNotificationServiceHandler : IDomainNotificationServic
 
     public void AddRange(IEnumerable<string> messages)
     {
-       _notifications.AddRange(messages);
+        _notifications.AddRange(messages);
     }
 
     public IReadOnlyList<string> Get()
@@ -43,11 +43,8 @@ public sealed class DomainNotificationServiceHandler : IDomainNotificationServic
     {
         if (_disposed) return;
 
-        if (disposing)
-        {
-            _notifications.Clear();
-        }
-        
+        if (disposing) _notifications.Clear();
+
         _disposed = true;
     }
 }

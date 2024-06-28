@@ -1,8 +1,8 @@
 ﻿using _5by5.InterAction.Sample.Domain.Contracts.v1;
-using FluentValidation.Results;
-using FluentValidation;
-using MediatR;
 using _5by5.InterAction.Sample.Domain.Dtos.v1;
+using FluentValidation;
+using FluentValidation.Results;
+using MediatR;
 
 namespace _5by5.InterAction.Sample.Domain.Pipes.v1;
 
@@ -24,6 +24,7 @@ public class FailFastValidation<TRequest, TResponse>(
 
         return failures.Any() ? await NotifyAsync(failures) : await next();
     }
+
     private Task<ValidationResult[]> GetResultsAsync(IValidationContext context, CancellationToken cancellationToken)
     {
         return Task.WhenAll(validators.Select(v => v.ValidateAsync(context, cancellationToken)));
