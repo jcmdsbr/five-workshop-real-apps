@@ -1,13 +1,9 @@
 ﻿namespace Five.Bank.Domain.Specifications.v1;
 
-public class CustomerMajoritySpecification
+public class CustomerMajoritySpecification(DateTime birthday)
 {
-    private readonly DateTime _birthday;
-
-    public CustomerMajoritySpecification(DateTime birthday)
+    public bool IsSatisfied()
     {
-        _birthday = birthday;
+        return DateTime.Now.Year - birthday.Year >= 18;
     }
-
-    public bool IsSatisfied() => DateTime.Now.Year - _birthday.Year >= 18;
 }

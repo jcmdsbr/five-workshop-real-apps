@@ -1,5 +1,4 @@
-﻿
-namespace Five.Bank.Api.Models.v1;
+﻿namespace Five.Bank.Api.Models.v1;
 
 public class CustomerOutputModel
 {

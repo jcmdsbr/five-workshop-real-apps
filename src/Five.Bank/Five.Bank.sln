@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Five.Bank.Api", "Five.Bank.Api\Five.Bank.Api.csproj", "{446C0AF2-1CA5-40D8-8025-E81EC3A31C50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Five.Bank.Api", "Five.Bank.Api\Five.Bank.Api.csproj", "{446C0AF2-1CA5-40D8-8025-E81EC3A31C50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Five.Bank.Domain", "Five.Bank.Domain\Five.Bank.Domain.csproj", "{2AFA4709-F454-4C4D-BCD9-37751CE801D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Five.Bank.Domain", "Five.Bank.Domain\Five.Bank.Domain.csproj", "{2AFA4709-F454-4C4D-BCD9-37751CE801D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Five.Bank.Infra.Services", "Five.Bank.Infra.Services\Five.Bank.Infra.Services.csproj", "{0D35FD12-370B-4BB7-B66C-347E51A418F7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Five.Bank.Infra.MongoDb", "Five.Bank.Infra.MongoDb\Five.Bank.Infra.MongoDb.csproj", "{DA5D5D2F-A6BE-4DB2-85DA-225C7BB4810F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Five.Bank.Infra.MongoDb", "Five.Bank.Infra.MongoDb\Five.Bank.Infra.MongoDb.csproj", "{DA5D5D2F-A6BE-4DB2-85DA-225C7BB4810F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +23,6 @@ Global
 		{2AFA4709-F454-4C4D-BCD9-37751CE801D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AFA4709-F454-4C4D-BCD9-37751CE801D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AFA4709-F454-4C4D-BCD9-37751CE801D3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0D35FD12-370B-4BB7-B66C-347E51A418F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0D35FD12-370B-4BB7-B66C-347E51A418F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0D35FD12-370B-4BB7-B66C-347E51A418F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0D35FD12-370B-4BB7-B66C-347E51A418F7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DA5D5D2F-A6BE-4DB2-85DA-225C7BB4810F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DA5D5D2F-A6BE-4DB2-85DA-225C7BB4810F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA5D5D2F-A6BE-4DB2-85DA-225C7BB4810F}.Release|Any CPU.ActiveCfg = Release|Any CPU

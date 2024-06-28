@@ -1,6 +1,6 @@
 ﻿namespace Five.Bank.Domain.Contracts.v1;
 
-public interface IEntity
+public interface IEntity<TId>
 {
-    Guid Id { get;  }
+    TId Id { get; set; }
 }

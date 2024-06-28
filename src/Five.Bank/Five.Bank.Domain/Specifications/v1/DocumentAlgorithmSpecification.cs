@@ -1,20 +1,13 @@
 ﻿namespace Five.Bank.Domain.Specifications.v1;
 
-public class DocumentAlgorithmSpecification
+public class DocumentAlgorithmSpecification(string document)
 {
-    private readonly string _document;
-
-    public DocumentAlgorithmSpecification(string document)
-    {
-        _document = document;
-    }
-
     public bool IsSatisfied()
     {
-        if (string.IsNullOrWhiteSpace(_document))
+        if (string.IsNullOrWhiteSpace(document))
             return false;
 
-        var clearDocument = _document.Trim();
+        var clearDocument = document.Trim();
         clearDocument = clearDocument.Replace("-", "");
         clearDocument = clearDocument.Replace(".", "");
 
@@ -34,19 +27,14 @@ public class DocumentAlgorithmSpecification
             clearDocument.Equals("77777777777") ||
             clearDocument.Equals("88888888888") ||
             clearDocument.Equals("99999999999"))
-        {
             return false;
-        }
 
         if (clearDocument.Any(c => !char.IsNumber(c)))
             return false;
 
         var documentArray = new int[11];
-       
-        for (var i = 0; i < clearDocument.Length; i++)
-        {
-            documentArray[i] = int.Parse(clearDocument[i].ToString());
-        }
+
+        for (var i = 0; i < clearDocument.Length; i++) documentArray[i] = int.Parse(clearDocument[i].ToString());
 
         for (var i = 0; i < documentArray.Length - 2; i++)
         {
@@ -55,19 +43,20 @@ public class DocumentAlgorithmSpecification
         }
 
         var modI = totalDigitI % 11;
-        if (modI < 2) { modI = 0; }
-        else { modI = 11 - modI; }
+        if (modI < 2)
+            modI = 0;
+        else
+            modI = 11 - modI;
 
-        if (documentArray[9] != modI)
-        {
-            return false;
-        }
+        if (documentArray[9] != modI) return false;
 
         totalDigitIi += modI * 2;
 
         var modIi = totalDigitIi % 11;
-        if (modIi < 2) { modIi = 0; }
-        else { modIi = 11 - modIi; }
+        if (modIi < 2)
+            modIi = 0;
+        else
+            modIi = 11 - modIi;
         return documentArray[10] == modIi;
     }
 }

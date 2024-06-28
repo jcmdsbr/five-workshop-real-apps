@@ -2,6 +2,6 @@
 
 namespace Five.Bank.Domain.Contracts.v1;
 
-public interface ICustomerRepository : IRepository<Customer>
+public interface ICustomerRepository : IRepository<Customer, Guid>
 {
 }

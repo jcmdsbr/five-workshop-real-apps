@@ -3,48 +3,33 @@ using Five.Bank.Api.Models.v1;
 using Five.Bank.Domain.Contracts.v1;
 using Five.Bank.Domain.Entities.v1;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 
 namespace Five.Bank.Api.Controllers.v1;
 
 [Route("api/v1/customers")]
 [ApiController]
-public class CustomerController : ControllerBase
+public class CustomerController(ICustomerRepository repository) : ControllerBase
 {
-
-    private readonly ICustomerRepository _repository;
-
-    public CustomerController(ICustomerRepository repository)
-    {
-        _repository = repository;
-    }
-
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] CustomerInputModel model)
+    public async Task<IActionResult> Post([FromBody] CustomerInputModel model, CancellationToken cancellationToken)
     {
-
-        //TODO implementar validação de nome.
-        var customer = new Customer(model.Name, 
-            model.Document, 
-            model.Birthday, 
+        var customer = new Customer(
+            model.Name!,
+            model.Document!,
+            model.Birthday,
             model.Address);
 
-        if (!customer.Validate())
-        {
-            return BadRequest(new { Message = "Dados inválidos." });
-        }
+        if (!customer.Validate()) return BadRequest(new { Message = "Dados inválidos." });
 
-        await _repository.AddAsync(customer);
+        await repository.AddAsync(customer, cancellationToken);
 
         return StatusCode((int)HttpStatusCode.Created, "Cliente cadastrado com sucesso!!!");
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> Get(Guid id)
+    public async Task<IActionResult> Get(Guid id, CancellationToken cancellationToken)
     {
-        // TODO instalar, configurar e implementar Automapper.
-
-        var customer = await _repository.GetByIdAsync(id);
+        var customer = await repository.GetSingleOrDefaultAsync(x => x.Id == id, cancellationToken);
 
         if (customer is null) return NotFound();
 
