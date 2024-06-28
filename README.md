@@ -1,6 +1,6 @@
 # Treinamento 5by5 :sunglasses:
 
-- Aplicação voltada para criação de de um banco aplicando conceitos modernos de codificação.
+- Exemplos voltados para o workshoop sobre SOLID/CQRS/CLEAN CODE/UNIT TESTS adminitrado no projeto interAção da empresa 5by5 Soluções em Sistemas.
 
 ## Estrelinha! :star:
 
@@ -19,9 +19,10 @@ Se esse projeto te ajudou em alguma coisa, taquele pau na estrelinha \o/
 
 ## Arquitetura / Padrões / Princípios 🏗️
 
-- Domain Driven Design (Layers, Domain Model Pattern and Repository Pattern)
 - SOLID
 - Clean Code
+- Unit tests
+- CQRS
 
 ## Links
 
