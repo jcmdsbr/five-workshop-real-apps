@@ -11,7 +11,7 @@ public sealed class Customer(Guid id, string name, string document, DateTime bir
     private const int MinimumDocLength = 11;
     private readonly Regex _onlyNumbers = new(@"[^\d]", RegexOptions.Compiled, TimeSpan.FromMilliseconds(1));
 
-
+    
     public Customer(string name, string document, DateTime birthday, Address? address) : this(Guid.NewGuid(), name, document, birthday, address)
     {
     }
