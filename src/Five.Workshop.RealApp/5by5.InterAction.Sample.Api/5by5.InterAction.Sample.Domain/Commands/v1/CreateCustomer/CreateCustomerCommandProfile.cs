@@ -9,9 +9,9 @@ public class CreateCustomerCommandProfile : Profile
     {
         CreateMap<CreateCustomerCommand, Customer>()
             .ForMember(fieldOutput => fieldOutput.Document, option => option
-                .MapFrom(input => input.Name));
+                .MapFrom(input => GetOnlyNumbers(input.Document)));
 
-        //CreateMap<Customer, CreateCustomerCommandResponse>();
+        CreateMap<Customer, CreateCustomerCommandResponse>();
     }
 
     public static string GetOnlyNumbers(string text)

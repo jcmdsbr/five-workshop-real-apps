@@ -15,12 +15,12 @@ public static class Bootstrapper
     public static IServiceCollection AddDomainContext(this IServiceCollection services, IConfiguration configuration)
     {
         return services
+            .AddAutoMapper(typeof(Bootstrapper))
             .AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(Bootstrapper)))
             .AddScoped<IDomainNotificationService, DomainNotificationServiceHandler>()
             .AddScoped(typeof(IPipelineBehavior<,>), typeof(FailFastValidation<,>))
             .AddCommands()
-            .AddValidators()
-            .AddAutoMapper(typeof(CreateCustomerCommandProfile));
+            .AddValidators();
     }
 
     private static IServiceCollection AddCommands(this IServiceCollection services)

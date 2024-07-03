@@ -1,17 +1,15 @@
-﻿using System.Linq.Expressions;
-using System.Net;
-using _5by5.InterAction.Sample.Api.Models.v1;
-using _5by5.InterAction.Sample.Domain.Commands.v1.CreateCustomer;
+﻿using _5by5.InterAction.Sample.Domain.Commands.v1.CreateCustomer;
 using _5by5.InterAction.Sample.Domain.Contracts.v1;
-using _5by5.InterAction.Sample.Domain.Entities.v1;
+using _5by5.InterAction.Sample.Domain.Queries.v1.GetCustomerById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace _5by5.InterAction.Sample.Api.Controllers.v1;
 
 [Route("api/v1/customers")]
 [ApiController]
-public sealed class CustomerController(IMediator bus) : ControllerBase
+public sealed class CustomerController(IMediator bus, IDomainNotificationService domainNotification) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] CreateCustomerCommand model, CancellationToken token)
@@ -25,18 +23,16 @@ public sealed class CustomerController(IMediator bus) : ControllerBase
         });
     }
 
-    //[HttpGet("{id:guid}")]
-    //public async Task<IActionResult> Get(Guid id, CancellationToken token)
-    //{
-    //    Expression<Func<Customer, bool>> predicate = x => x.Id == id;
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> Get(Guid id, CancellationToken token)
+    {
+        var customer = await bus.Send(new GetCustomerByIdQuery(id));
 
-    //    var customer = await repository.GetSingleOrDefaultAsync(predicate, token);
+        if (customer is null) return NotFound();
 
-    //    if (customer is null) return NotFound();
-
-    //    return Ok(new
-    //    {
-    //        Content = new CustomerOutputModel(customer.Id, customer.Name)
-    //    });
-    //}
+        return Ok(new
+        {
+            Content = customer
+        });
+    }
 }

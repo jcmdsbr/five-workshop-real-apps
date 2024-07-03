@@ -4,17 +4,18 @@ using _5by5.InterAction.Sample.Domain.ValueObjects.v1;
 
 namespace _5by5.InterAction.Sample.Domain.Entities.v1;
 
-public sealed class Customer(Guid id, string name, string document, DateTime birthday, Address? address) : IEntity<Guid>
+public sealed class Customer : IEntity<Guid>
 {
-    public Customer(string name, string document, DateTime birthday, Address? address) : this(Guid.NewGuid(), name, document, birthday, address)
+    public Customer()
     {
+        Id = Guid.NewGuid();
     }
 
-    public string Name { get; init; } = name;
-    public string Document { get; init; } = document;
-    public DateTime Birthday { get; init; } = birthday;
-    public Address? Address { get; init; } = address;
+    public string Name { get; set; }
+    public string Document { get; set; }
+    public DateTime Birthday { get; set; }
+    public Address? Address { get; set; }
 
-    public Guid Id { get; set; } = id;
+    public Guid Id { get; set; }
 
 }
