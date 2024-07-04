@@ -13,7 +13,7 @@ public class CreateCustomerCommandValidator : AbstractValidator<CreateCustomerCo
     {
         RuleFor(createCustomerCommand => createCustomerCommand.Birthday)
             .Must(createCustomerCommand => DateTime.Now.Year - createCustomerCommand.Year >= MinimumAge)
-            .WithMessage("Idade deve ser maior que 18 anos!");
+            .WithMessage("Idade deve ser maior que 18 anos!"); // TODO colocar essas mensagens em constantes para poder fazer validação no teste
 
         RuleFor(createCustomerCommand => createCustomerCommand.Name)
             .Cascade(CascadeMode.Stop)

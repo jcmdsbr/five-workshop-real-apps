@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using _5by5.InterAction.Sample.Domain.Contracts.v1;
+﻿using _5by5.InterAction.Sample.Domain.Contracts.v1;
 using _5by5.InterAction.Sample.Domain.ValueObjects.v1;
 
 namespace _5by5.InterAction.Sample.Domain.Entities.v1;
